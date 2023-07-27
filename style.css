@@ -31,10 +31,19 @@ body{
     background-color: #f8f9fa;
     color: #202122;
     margin: 1em 0;
-    border: 1px solid #a2a9b1;
+    border: 1px solid #4c4d4e;
     border-collapse: collapse;
 }
 
+.tableStyle td{
+    border: 1px solid #4c4d4e;
+    padding: 0.2em 0.4em;
+}
+
+.cellPedido{
+    color: white;
+    background-color: green;
+}
 
 .container{
     display: flex;
@@ -81,7 +90,7 @@ body{
     padding: 2px 12px 3px 12px;
     border: solid 1px #494949;
     background-color: grey;
-    transition: all .1s ease;
+    transition: all .6s ease;
     
 }
 
