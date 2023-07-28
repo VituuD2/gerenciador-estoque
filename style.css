@@ -40,11 +40,6 @@ body{
     padding: 0.2em 0.4em;
 }
 
-.cellPedido{
-    color: white;
-    background-color: green;
-}
-
 .container{
     display: flex;
     flex-direction: column;
@@ -59,8 +54,9 @@ body{
     align-items: center;
     font-family: 'Ubuntu';
     margin: 50px 20px 20px 20px;
-    width: 80vw;
-    height: 700px;
+    min-height: 700px;
+    width: 95vw;
+    height: fit-content;
     background-color: #dbdbdb;
     border-radius: 15px;
     padding: 8px;
@@ -79,7 +75,7 @@ body{
     font-weight: 500;
 }
 
-.content .plusBtn, .ConfirmBtn{
+.content .plusBtn, .exportBtn{
     color: #fff;
     padding: 3px 12px 3px 12px;
     border-radius: 5px;
@@ -99,23 +95,23 @@ body{
     background-color: #fff;
 }
 
-.content .ConfirmBtn{
+.content .exportBtn{
     padding: 8px 18px;
     border: solid 1px darkgreen;
     background-color: green;
     transition: background-color .3s;
 }
 
-.content .ConfirmBtn{
+.content .exportBtn{
     transition: background-color .3s ease, transform .1s ease;
 }
 
-.content .ConfirmBtn:hover{
+.content .exportBtn:hover{
     color: green;
     background-color: #fff;
 }
 
-.content .ConfirmBtn:active{
+.content .exportBtn:active{
     transform: scale(1.07);
 }
 
@@ -123,14 +119,25 @@ body{
     margin: 20px 0px;
 }
 
-/* .ConfirmBtn-container{
+/* .exportBtn-container{
     display: flex;
     width: fit-content;
     height: 100%;
     justify-content: end;
 } */
 
-.ConfirmBtn{
-    position: absolute;
-    top: 90%;
+.exportBtn{
+    position: relative;
+}
+
+.cellPedido{
+    color: white;
+    background-color: green;
+    font-weight: 500;
+}
+
+.countCell{
+    background-color: #414141;
+    font-weight: 600;
+    color: #fff;
 }
