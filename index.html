@@ -15,9 +15,11 @@
   <div class="container">
     <div class="content">
       <div class="input-container">
-        <label for="CodigoPedido">Código do Pedido</label>
+        <label for="CodigoPedido">CÓDIGO DO PEDIDO</label>
         <input type="text" id="codigoPedido">
-        <label for="CodigoProduto">Código do Produto</label>
+        <label for="inputData">DATA</label>
+        <input type="date" name="Data" id="inputData">
+        <label for="CodigoProduto">CÓDIGO DO PRODUTO</label>
         <input type="text" id="codigoProduto">
         <input class="plusBtn" type="button" value="+">
         <input class="exportBtn" type="button" value="EXPORTAR" onclick="exportToXLSX()">
@@ -31,7 +33,6 @@
       </div>
     </div>
   </div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </body>
 </html>

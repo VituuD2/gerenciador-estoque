@@ -55,6 +55,21 @@ codigoPedido.addEventListener('keydown', (e) => {
     }
 });
 
+let inputData = document.querySelector('#inputData');
+
+inputData.addEventListener('change', (e)=>{
+    const inputValue = e.target.value;
+    if (inputValue) {
+        const [day, month, year] = inputValue.split('-');
+
+        const formattedData = `${day}-${month}-${year}`;
+
+        inputData.value = formattedData;
+    }
+})
+    
+
+
 codigoProduto.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
         e.preventDefault();
