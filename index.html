@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="shortcut icon" href="imgs/flaticon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
@@ -17,16 +18,17 @@
       <div class="input-container">
         <label for="CodigoPedido">CÓDIGO DO PEDIDO</label>
         <input type="text" id="codigoPedido">
-        <label for="inputData">DATA</label>
-        <input type="date" name="Data" id="inputData">
         <label for="CodigoProduto">CÓDIGO DO PRODUTO</label>
         <input type="text" id="codigoProduto">
-        <input class="plusBtn" type="button" value="+">
+        <label for="inputData">DATA</label>
+        <input type="date" name="Data" id="inputData">
+        <label for="varejoRadio">VAREJO</label>
+        <input type="radio" value="VAREJO" name="seller" id="varejoRadio">
+        <label for="atacadoRadio">ATACADO</label>
+        <input type="radio" value="ATACADO" name="seller" id="atacadoRadio">
+        <input id="plusBtn" class="plusBtn" type="button" value="+">
         <input class="exportBtn" type="button" value="EXPORTAR" onclick="exportToXLSX()">
       </div>
-      <div class="exportBtn-container" >
-      </div>
-
       <div class="table-container">
         <table id="table" border="0" class="tableStyle">
         </table>

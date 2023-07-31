@@ -1,33 +1,13 @@
+//Importações do HTML
 let codigoPedido = document.querySelector('#codigoPedido');
 let codigoProduto = document.querySelector('#codigoProduto');
-let plusBtn = document.querySelector('.plusBtn');
+let plusBtn = document.querySelector('#plusBtn');
 let table = document.querySelector('#table');
 let pedidoCountContainer = document.querySelector('#pedidoCountContainer');
 let pedidoCount = 1;
 let regex = /[a-zA-Z]/;
 
-function exportToXLSX() {
-    let headers = ["Pedido", "Produto"];
-    let data = [];
-  
-    let tableRows = document.querySelectorAll('.tableStyle tr');
-    for (let i = 0; i < tableRows.length; i++) {
-      let rowData = [];
-      let cells = tableRows[i].querySelectorAll('td');
-      for (let j = 0; j < cells.length; j++) {
-        rowData.push(cells[j].textContent);
-      }
-      data.push(rowData);
-    }
-  
-    let workbook = XLSX.utils.book_new();
-    let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
-  
-    let today = new Date();
-    let fileName = "dados_" + today.toISOString().slice(0, 10) + ".xlsx";
-    XLSX.writeFile(workbook, fileName);
-  }
+//Função para criar a tabela com código do pedido 
 
 codigoPedido.addEventListener('keydown', (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
@@ -55,20 +35,7 @@ codigoPedido.addEventListener('keydown', (e) => {
     }
 });
 
-let inputData = document.querySelector('#inputData');
-
-inputData.addEventListener('change', (e)=>{
-    const inputValue = e.target.value;
-    if (inputValue) {
-        const [day, month, year] = inputValue.split('-');
-
-        const formattedData = `${day}-${month}-${year}`;
-
-        inputData.value = formattedData;
-    }
-})
-    
-
+//Função para adicionar à tabela o código do Produto
 
 codigoProduto.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.keyCode === 13) {
@@ -91,12 +58,61 @@ codigoProduto.addEventListener('keydown', (e) => {
     }
 });
 
+//Função para adicionar à tabela a data
 
+let inputData = document.querySelector('#inputData');
+let dateRow = document.querySelector('.dateRow');
 
+inputData.addEventListener('change', (e)=>{
+    if (inputData) {
+        let [year, month, day] = inputData.value.split('-');
+        let formattedYear = year.slice(-2);
+        let formattedData = `${day}-${month}-${formattedYear}`;
+        console.log(formattedData);
+        dateCell = document.createElement('td');
+        dateCell.classList.add('dateCell');
+
+        dateCell.textContent = formattedData;
+        row.appendChild(dateCell);
+    }
+
+    if (inputData.value != null && codigoPedido.value !=0) {
+        inputData.disabled = true;
+    }
+})
+
+//Botão para limpar os campos e começar um novo pedido
 
 plusBtn.addEventListener('click', ()=> {
     codigoPedido.value = '';
     codigoProduto.value = '';
+    inputData.value = '';
+    inputData.disabled = false;
     codigoPedido.focus();
 
 });
+
+//Função para Exportar em XLSX
+
+function exportToXLSX() {
+    let headers = ["Pedido", "Produto"];
+    let data = [];
+  
+    let tableRows = document.querySelectorAll('.tableStyle tr');
+    for (let i = 0; i < tableRows.length; i++) {
+      let rowData = [];
+      let cells = tableRows[i].querySelectorAll('td');
+      for (let j = 0; j < cells.length; j++) {
+        rowData.push(cells[j].textContent);
+      }
+      data.push(rowData);
+    }
+  
+    let workbook = XLSX.utils.book_new();
+    let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
+  
+    let today = new Date();
+    let fileName = "dados_" + today.toISOString().slice(0, 10) + ".xlsx";
+    XLSX.writeFile(workbook, fileName);
+  }

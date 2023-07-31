@@ -1,11 +1,11 @@
+@charset "utf-8";
+
 *{
     list-style-type: none;
     text-decoration: none;   
 }
 
-@charset "utf-8";
-
-input[type=button]{
+input[type=button], input[type=date]{
     cursor: pointer;
     border:none;
 }
@@ -55,7 +55,7 @@ body{
     font-family: 'Ubuntu';
     margin: 50px 20px 20px 20px;
     min-height: 700px;
-    width: 95vw;
+    width: 97vw;
     height: fit-content;
     background-color: #dbdbdb;
     border-radius: 15px;
@@ -140,4 +140,12 @@ body{
     background-color: #414141;
     font-weight: 600;
     color: #fff;
+}
+
+.dateCell{
+    font-weight: 500;
+    border-collapse: collapse;
+    font-size: 15px;
+    background-color: #c5c5c5;
+    border: 1.9px solid #000 !important;
 }
