@@ -10,8 +10,18 @@ input[type=button], input[type=date]{
     border:none;
 }
 
+input[type=text], input[type=date]{
+    border: solid 1px #00000020;
+    background-color: #00000020;
+}
+
+input[type=text], input[type=date]:focus{
+    outline-color: #8d8d8d;
+}
+
 body{
-    background: linear-gradient(90deg, rgba(10,9,41,1) 0%, rgba(75,13,58,1) 50%, rgb(11, 48, 65) 100%);
+    min-width: fit-content;
+    background: linear-gradient(90deg, rgba(10,9,41,1) 0%, rgba(75,13,58,1) 40%, rgb(11, 48, 65) 80%, rgba(10,9,41,1) 100%);
     /* background-size: 400%;
     animation: bg-animation 5s infinite alternate; */
 }
@@ -51,11 +61,11 @@ body{
 .content{
     display: flex;
     flex-direction: column;
-    align-items: center;
     font-family: 'Ubuntu';
     margin: 50px 20px 20px 20px;
-    min-height: 700px;
-    width: 97vw;
+    min-height: 650px;
+    min-width: 95vw;
+    max-width: fit-content;
     height: fit-content;
     background-color: #dbdbdb;
     border-radius: 15px;
@@ -148,4 +158,29 @@ body{
     font-size: 15px;
     background-color: #c5c5c5;
     border: 1.9px solid #000 !important;
+    min-width: 65px;
+}
+
+.radioCell{
+    background-color: rgb(228, 34, 50);
+    color: #fff;
+    font-weight: 400;
+}
+
+.removeButton{
+    padding: 2px 7px;
+    cursor: pointer;
+    border: none;
+    background-color: red;
+    font-weight: 600;
+    color: #fff;
+    transition: transform .1s ease;
+}
+
+.removeButton:hover{
+    transform: scale(1.1);
+}
+
+.removeButton:active{
+    background-color: #e5ff00;
 }

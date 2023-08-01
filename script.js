@@ -6,6 +6,7 @@ let table = document.querySelector('#table');
 let pedidoCountContainer = document.querySelector('#pedidoCountContainer');
 let pedidoCount = 1;
 let regex = /[a-zA-Z]/;
+let row;
 
 //Função para criar a tabela com código do pedido 
 
@@ -29,11 +30,43 @@ codigoPedido.addEventListener('keydown', (e) => {
                 cell.textContent = codigoPedidoValor;
                 table.appendChild(row);
                 row.appendChild(cell);
+                
+                //Botão para remover o pedido
+                let removeCell = document.createElement('td');
+                let removeButton = document.createElement('button');
+                removeButton.classList.add('removeButton');
+                removeButton.textContent = "✖";
+                removeButton.addEventListener('click', () => {
+                    let parentRow = removeButton.closest('tr');
+                    parentRow.remove();
+                    updatePedidoCount();
+                    codigoPedido.value ='';
+                    codigoPedido.focus();
+                });
+                removeCell.appendChild(removeButton);
+                row.appendChild(removeCell);
+                updatePedidoCount();
         }
         codigoProduto.focus();
         }
     }
 });
+
+//Função para atualizar a contagem de pedidos
+
+function updatePedidoCount() {
+    let rows = document.querySelectorAll('.tableStyle tr');
+
+    rows.forEach((row, index) => {
+        let countCell = row.querySelector('.countCell');
+        if (countCell) {
+            countCell.textContent = index +1;
+        }
+    });
+
+    pedidoCount = rows.length +1; // -1 para descontar o cabeçalho da tabela
+}
+
 
 //Função para adicionar à tabela o código do Produto
 
@@ -45,7 +78,6 @@ codigoProduto.addEventListener('keydown', (e) => {
         let codigoProdutoValor = codigoProduto.value;
 
         if (codigoProduto.value.length !=13 || regex.test(codigoProdutoValor) == true) {
-            console.log(codigoProduto.value.length);
             window.alert('Código de Produto Incorreto !');
         } else {
             if (codigoProdutoValor) {
@@ -58,7 +90,7 @@ codigoProduto.addEventListener('keydown', (e) => {
     }
 });
 
-//Função para adicionar à tabela a data
+//Função para adicionar data à tabela
 
 let inputData = document.querySelector('#inputData');
 let dateRow = document.querySelector('.dateRow');
@@ -74,6 +106,7 @@ inputData.addEventListener('change', (e)=>{
 
         dateCell.textContent = formattedData;
         row.appendChild(dateCell);
+        let removeCell = document.createElement('td');
     }
 
     if (inputData.value != null && codigoPedido.value !=0) {
@@ -81,11 +114,40 @@ inputData.addEventListener('change', (e)=>{
     }
 })
 
+//Função para pegar o input:radio checked e mostrar o valor na tabela
+let varejoRadio = document.querySelector('#varejoRadio');
+let atacadoRadio =  document.querySelector('#atacadoRadio');
+let radioButtons = document.querySelectorAll('input[name="seller"]');
+function getValue() {
+    let selectedValue = null
+    
+    radioButtons.forEach(radio => {
+        if (radio.checked) {
+            selectedValue = radio.value;
+        }
+    })
+    if (!varejoRadio.checked && !atacadoRadio.checked) {
+        window.alert('Selecione uma opção ATACADO ou VAREJO para continuar !');
+    } else if (inputData.value !== '') {
+        radioCell = document.createElement('td');
+        radioCell.textContent = selectedValue;
+        radioCell.classList.add('radioCell');
+        row.appendChild(radioCell);
+    } else {
+        window.alert('Preencha a DATA para continuar !');
+    }
+}
+
 //Botão para limpar os campos e começar um novo pedido
 
 plusBtn.addEventListener('click', ()=> {
+    getValue();
+    let row = document.createElement('tr');
+    countCell = document.createElement('td');
     codigoPedido.value = '';
     codigoProduto.value = '';
+    varejoRadio.checked = false;
+    atacadoRadio.checked = false;
     inputData.value = '';
     inputData.disabled = false;
     codigoPedido.focus();
@@ -95,7 +157,8 @@ plusBtn.addEventListener('click', ()=> {
 //Função para Exportar em XLSX
 
 function exportToXLSX() {
-    let headers = ["Pedido", "Produto"];
+    updatePedidoCount();
+    let headers = ["Contagem","Pedido", "Produtos"];
     let data = [];
   
     let tableRows = document.querySelectorAll('.tableStyle tr');
