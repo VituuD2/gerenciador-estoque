@@ -67,6 +67,25 @@ function updatePedidoCount() {
     pedidoCount = rows.length +1; // -1 para descontar o cabeçalho da tabela
 }
 
+//Função para carregar os dados do arquivo produtos.json
+async function carregarProdutos() {
+    try {
+        const response = await fetch('produtos.json');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro ao carregar os produtos', error);
+        return {};
+    }
+}
+// Objeto para armazenar os produtos carregados do arquivo
+
+let produtos = {};
+
+// Carregar os produtos do arquivo produtos.json
+carregarProdutos().then((data) => {
+    produtos = data;
+});
 
 //Função para adicionar à tabela o código do Produto
 
@@ -77,11 +96,11 @@ codigoProduto.addEventListener('keydown', (e) => {
         let cell2 = document.createElement('td');
         let codigoProdutoValor = codigoProduto.value;
 
-        if (codigoProduto.value.length !=13 || regex.test(codigoProdutoValor) == true) {
+        if (codigoProduto.value.length !=13 || !produtos.hasOwnProperty(codigoProdutoValor)) {
             window.alert('Código de Produto Incorreto !');
         } else {
             if (codigoProdutoValor) {
-                cell2.textContent = codigoProdutoValor;
+                cell2.textContent = produtos[codigoProdutoValor];
                 row.appendChild(cell2);
             }
         }

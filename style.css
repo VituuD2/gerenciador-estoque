@@ -12,6 +12,7 @@ input[type=button], input[type=date]{
 
 input[type=text], input[type=date]{
     border: solid 1px #00000020;
+    border-radius: 4px;
     background-color: #00000020;
 }
 
