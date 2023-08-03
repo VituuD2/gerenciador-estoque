@@ -8,8 +8,64 @@ let pedidoCount = 1;
 let regex = /[a-zA-Z]/;
 let row;
 
-//Função para criar a tabela com código do pedido 
+// Function to load data from localStorage and populate the table
+function loadDataFromLocalStorage() {
+    let data = localStorage.getItem('tableData');
+    if (data) {
+      data = JSON.parse(data);
+      for (let i = 0; i < data.length; i++) {
+        row = document.createElement('tr');
+        countCell = document.createElement('td');
+        countCell.classList.add('countCell');
+        countCell.textContent = data[i][0];
+        row.appendChild(countCell);
+  
+        for (let j = 1; j < data[i].length; j++) {
+          let cell = document.createElement('td');
+          cell.textContent = data[i][j];
+          row.appendChild(cell);
+        }
+  
+        let removeCell = document.createElement('td');
+        let removeButton = document.createElement('button');
+        removeButton.classList.add('removeButton');
+        removeButton.textContent = "✖";
+        removeButton.addEventListener('click', () => {
+          let parentRow = removeButton.closest('tr');
+          parentRow.remove();
+          updatePedidoCount();
+          saveDataToLocalStorage(); // Save data to localStorage after removing the row
+        });
+        removeCell.appendChild(removeButton);
+        row.appendChild(removeCell);
+  
+        table.appendChild(row);
+        updatePedidoCount();
+      }
+    }
+  }
 
+// Call the function to load data when the page is loaded
+window.addEventListener('DOMContentLoaded', () => {
+    loadDataFromLocalStorage();
+  });
+
+function saveDataToLocalStorage() {
+    let data = [];
+    let tableRows = document.querySelectorAll('.tableStyle tr');
+    for (let i = 0; i < tableRows.length; i++) {
+      let rowData = [];
+      let cells = tableRows[i].querySelectorAll('td');
+      for (let j = 0; j < cells.length; j++) {
+        rowData.push(cells[j].textContent);
+      }
+      data.push(rowData);
+    }
+    localStorage.setItem('tableData', JSON.stringify(data));
+  }
+
+
+//Função para criar a tabela com código do pedido 
 codigoPedido.addEventListener('keydown', (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
         e.preventDefault();
@@ -102,12 +158,14 @@ codigoProduto.addEventListener('keydown', (e) => {
             if (codigoProdutoValor) {
                 cell2.textContent = produtos[codigoProdutoValor];
                 row.appendChild(cell2);
+                saveDataToLocalStorage(); 
             }
         }
         codigoProduto.value = '';
         codigoProduto.focus();
     }
 });
+
 
 //Função para adicionar data à tabela
 
@@ -137,6 +195,7 @@ inputData.addEventListener('change', (e)=>{
 let varejoRadio = document.querySelector('#varejoRadio');
 let atacadoRadio =  document.querySelector('#atacadoRadio');
 let radioButtons = document.querySelectorAll('input[name="seller"]');
+
 function getValue() {
     let selectedValue = null
     
@@ -152,6 +211,7 @@ function getValue() {
         radioCell.textContent = selectedValue;
         radioCell.classList.add('radioCell');
         row.appendChild(radioCell);
+        saveDataToLocalStorage(); 
     } else {
         window.alert('Preencha a DATA para continuar !');
     }
@@ -161,6 +221,7 @@ function getValue() {
 
 plusBtn.addEventListener('click', ()=> {
     getValue();
+    saveDataToLocalStorage(); 
     let row = document.createElement('tr');
     countCell = document.createElement('td');
     codigoPedido.value = '';
