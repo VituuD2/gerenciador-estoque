@@ -8,7 +8,7 @@ let pedidoCount = 1;
 let regex = /[a-zA-Z]/;
 let row;
 
-// Function to load data from localStorage and populate the table
+//Função para carregar os dados do LocalStorage e popular na tabela 
 function loadDataFromLocalStorage() {
     let data = localStorage.getItem('tableData');
     if (data) {
