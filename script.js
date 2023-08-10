@@ -12,38 +12,58 @@ let row;
 function loadDataFromLocalStorage() {
     let data = localStorage.getItem('tableData');
     if (data) {
-      data = JSON.parse(data);
-      for (let i = 0; i < data.length; i++) {
-        row = document.createElement('tr');
-        countCell = document.createElement('td');
-        countCell.classList.add('countCell');
-        countCell.textContent = data[i][0];
-        row.appendChild(countCell);
-  
-        for (let j = 1; j < data[i].length; j++) {
-          let cell = document.createElement('td');
-          cell.textContent = data[i][j];
-          row.appendChild(cell);
+        data = JSON.parse(data);
+        for (let i = 0; i < data.length; i++) {
+            row = document.createElement('tr');
+            countCell = document.createElement('td');
+            countCell.classList.add('countCell');
+            countCell.textContent = data[i][0];
+            row.appendChild(countCell);
+
+            for (let j = 1; j < data[i].length; j++) {
+                let cell = document.createElement('td');
+                cell.textContent = data[i][j];
+                row.appendChild(cell);
+            }
+
+            // Adicionar botão de remover
+            let removeCell = document.createElement('td');
+            let removeButton = document.createElement('button');
+            removeButton.classList.add('removeButton');
+            removeButton.textContent = "✖";
+            removeButton.addEventListener('click', () => {
+                let parentRow = removeButton.closest('tr');
+                parentRow.remove();
+                updatePedidoCount();
+                saveDataToLocalStorage();
+            });
+            removeCell.appendChild(removeButton);
+            row.appendChild(removeCell);
+
+            // Verificar se o botão de remover já existe na linha
+            let existingRemoveButtonCell = row.querySelector('.removeButtonCell');
+            if (existingRemoveButtonCell) {
+                // Criar o botão de remover novamente
+                let removeCell = document.createElement('td');
+                removeCell.classList.add('removeButtonCell');
+                let removeButton = document.createElement('button');
+                removeButton.classList.add('removeButton');
+                removeButton.textContent = "✖";
+                removeButton.addEventListener('click', () => {
+                    let parentRow = removeButton.closest('tr');
+                    parentRow.remove();
+                    updatePedidoCount();
+                    saveDataToLocalStorage();
+                });
+                removeCell.appendChild(removeButton);
+                row.appendChild(removeCell);
+            }
+            
+            table.appendChild(row);
+            updatePedidoCount();
         }
-  
-        let removeCell = document.createElement('td');
-        let removeButton = document.createElement('button');
-        removeButton.classList.add('removeButton');
-        removeButton.textContent = "✖";
-        removeButton.addEventListener('click', () => {
-          let parentRow = removeButton.closest('tr');
-          parentRow.remove();
-          updatePedidoCount();
-          saveDataToLocalStorage(); // Save data to localStorage after removing the row
-        });
-        removeCell.appendChild(removeButton);
-        row.appendChild(removeCell);
-  
-        table.appendChild(row);
-        updatePedidoCount();
-      }
     }
-  }
+}
 
 // Call the function to load data when the page is loaded
 window.addEventListener('DOMContentLoaded', () => {
@@ -86,26 +106,33 @@ codigoPedido.addEventListener('keydown', (e) => {
                 cell.textContent = codigoPedidoValor;
                 table.appendChild(row);
                 row.appendChild(cell);
+
+                // Célula de data
+                dateCell = document.createElement('td');
+                dateCell.classList.add('dateCell');
+                row.appendChild(dateCell);
+
+                // Célula de vendedor
+                sellerCell = document.createElement('td');
+                sellerCell.classList.add('radioCell');
+                row.appendChild(sellerCell);
                 
-                //Botão para remover o pedido
-                let removeCell = document.createElement('td');
-                let removeButton = document.createElement('button');
-                removeButton.classList.add('removeButton');
-                removeButton.textContent = "✖";
-                removeButton.addEventListener('click', () => {
-                    let parentRow = removeButton.closest('tr');
-                    parentRow.remove();
-                    updatePedidoCount();
-                    codigoPedido.value ='';
-                    codigoPedido.focus();
-                });
-                removeCell.appendChild(removeButton);
-                row.appendChild(removeCell);
-                updatePedidoCount();
-        }
-        codigoProduto.focus();
-        }
-    }
+                // let removeCell = document.createElement('th');
+                // let removeButton = document.createElement('button');
+                // removeButton.classList.add('removeButton');
+                // removeButton.textContent = "✖";
+                // removeButton.addEventListener('click', () => {
+                // let parentRow = removeButton.closest('tr');
+                // parentRow.remove();
+                // updatePedidoCount();
+                // saveDataToLocalStorage(); // Save data to localStorage after removing the row
+                // });
+                // removeCell.appendChild(removeButton);
+                // row.appendChild(removeCell);
+                    }
+                    codigoProduto.focus();
+                }
+            }
 });
 
 //Função para atualizar a contagem de pedidos
@@ -156,6 +183,22 @@ codigoProduto.addEventListener('keydown', (e) => {
             window.alert('Código de Produto Incorreto !');
         } else {
             if (codigoProdutoValor) {
+                // Adicionar botão de remover
+                let removeCell = document.createElement('td');
+                removeCell.classList.add('removeButtonCell'); // Adicionar classe específica para célula do botão de remover
+                let removeButton = document.createElement('button');
+                removeButton.classList.add('removeButton');
+                removeButton.textContent = "✖";
+                removeButton.addEventListener('click', () => {
+                    let parentRow = removeButton.closest('tr');
+                    parentRow.remove();
+                    updatePedidoCount();
+                    saveDataToLocalStorage();
+                });
+                removeCell.appendChild(removeButton);
+                row.appendChild(removeCell);
+    
+
                 cell2.textContent = produtos[codigoProdutoValor];
                 row.appendChild(cell2);
                 saveDataToLocalStorage(); 
@@ -173,19 +216,6 @@ let inputData = document.querySelector('#inputData');
 let dateRow = document.querySelector('.dateRow');
 
 inputData.addEventListener('change', (e)=>{
-    if (inputData) {
-        let [year, month, day] = inputData.value.split('-');
-        let formattedYear = year.slice(-2);
-        let formattedData = `${day}-${month}-${formattedYear}`;
-        console.log(formattedData);
-        dateCell = document.createElement('td');
-        dateCell.classList.add('dateCell');
-
-        dateCell.textContent = formattedData;
-        row.appendChild(dateCell);
-        let removeCell = document.createElement('td');
-    }
-
     if (inputData.value != null && codigoPedido.value !=0) {
         inputData.disabled = true;
     }
@@ -207,10 +237,7 @@ function getValue() {
     if (!varejoRadio.checked && !atacadoRadio.checked) {
         window.alert('Selecione uma opção ATACADO ou VAREJO para continuar !');
     } else if (inputData.value !== '') {
-        radioCell = document.createElement('td');
-        radioCell.textContent = selectedValue;
-        radioCell.classList.add('radioCell');
-        row.appendChild(radioCell);
+        sellerCell.textContent = selectedValue;
         saveDataToLocalStorage(); 
     } else {
         window.alert('Preencha a DATA para continuar !');
@@ -220,19 +247,58 @@ function getValue() {
 //Botão para limpar os campos e começar um novo pedido
 
 plusBtn.addEventListener('click', ()=> {
-    getValue();
+    if (inputData.value == '') {
+        window.alert('Ação Incorreta');
+    } else {
+        getValue();
+
+        // Preencher células de data e vendedor
+        updateDataCell();
+        updateSellerCell();
+        
+        countCell = document.createElement('td');
+        codigoPedido.value = '';
+        codigoProduto.value = '';
+        varejoRadio.checked = false;
+        atacadoRadio.checked = false;
+        inputData.value = '';
+        inputData.disabled = false;
+        codigoPedido.focus();
+        
+    }
     saveDataToLocalStorage(); 
-    let row = document.createElement('tr');
-    countCell = document.createElement('td');
-    codigoPedido.value = '';
-    codigoProduto.value = '';
-    varejoRadio.checked = false;
-    atacadoRadio.checked = false;
-    inputData.value = '';
-    inputData.disabled = false;
-    codigoPedido.focus();
 
 });
+
+function updateDataCell() {
+    let dateCells = document.querySelectorAll('.dateCell');
+    dateCells.forEach(cell => {
+        if (dateCells) {
+            let [year, month, day] = inputData.value.split('-');
+            let formattedYear = year.slice(-2);
+            let formattedData = `${day}-${month}-${formattedYear}`;
+            console.log(formattedData);
+            
+            cell.textContent = formattedData;
+        }
+    });
+}
+
+function updateSellerCell() {
+    let sellerCells = document.querySelectorAll('.radioCell');
+    let selectedValue = null;
+    
+    radioButtons.forEach(radio => {
+        if (radio.checked) {
+            selectedValue = radio.value;
+        }
+    });
+
+    sellerCells.forEach(cell => {
+        cell.textContent = selectedValue;
+    });
+}
+
 
 //Função para Exportar em XLSX
 
@@ -240,22 +306,100 @@ function exportToXLSX() {
     updatePedidoCount();
     let headers = ["Contagem","Pedido", "Produtos"];
     let data = [];
-  
+
     let tableRows = document.querySelectorAll('.tableStyle tr');
     for (let i = 0; i < tableRows.length; i++) {
-      let rowData = [];
-      let cells = tableRows[i].querySelectorAll('td');
-      for (let j = 0; j < cells.length; j++) {
-        rowData.push(cells[j].textContent);
-      }
-      data.push(rowData);
+        let rowData = [];
+        let cells = tableRows[i].querySelectorAll('td');
+        
+        // Create a new array to store cell values excluding removeButton cells
+        let rowDataWithoutButtons = [];
+        for (let j = 0; j < cells.length; j++) {
+            if (!cells[j].classList.contains('removeButton')) {
+                rowDataWithoutButtons.push(cells[j].textContent);
+            }
+        }
+
+        // Skip rows that only contain the removeButton cell
+        if (rowDataWithoutButtons.length > 0) {
+            rowData.push(...rowDataWithoutButtons);
+            data.push(rowData);
+        }
     }
-  
+
     let workbook = XLSX.utils.book_new();
     let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
-  
+
     let today = new Date();
     let fileName = "dados_" + today.toISOString().slice(0, 10) + ".xlsx";
     XLSX.writeFile(workbook, fileName);
+}
+  //Função para importar em XLSX
+
+  document.querySelector('#importBtn').addEventListener('change', (event) => {
+    importAndReplaceTable(event);
+});
+
+function importAndReplaceTable(event) {
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        // Limpa todas as linhas existentes antes de importar
+        removeAllRows();
+
+        for (let i = 1; i < rows.length; i++) {
+            let row = document.createElement("tr");
+
+            for (let j = 0; j < rows[i].length; j++) {
+                let cell = document.createElement("td");
+                cell.textContent = rows[i][j];
+                row.appendChild(cell);
+            }
+
+            let removeCell = document.createElement("td");
+            let removeButton = document.createElement("button");
+            removeButton.classList.add("removeButton");
+            removeButton.textContent = "✖";
+            removeButton.addEventListener("click", () => {
+                let parentRow = removeButton.closest("tr");
+                if(parentRow) {
+                    parentRow.remove();
+                    updatePedidoCount();
+                    saveDataToLocalStorage();
+                }
+            });
+            removeCell.appendChild(removeButton);
+            row.appendChild(removeCell);
+
+            table.appendChild(row);
+            saveDataToLocalStorage();
+        }
+    };
+
+    reader.readAsArrayBuffer(file);
+}
+
+  //Função para limpar toda tabela
+
+  function removeAllRows() {
+    let tableRows = document.querySelectorAll('.tableStyle tr');
+    tableRows.forEach(row => {
+      row.remove();
+    });
+  
+    // Atualizar a contagem de pedidos após remover todas as linhas
+    updatePedidoCount();
+    // Salvar os dados no Local Storage após remover todas as linhas
+    saveDataToLocalStorage();
   }

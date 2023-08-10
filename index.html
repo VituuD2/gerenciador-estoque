@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="awesome6/css/all.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="shortcut icon" href="../imgs/flaticon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
@@ -22,12 +23,33 @@
         <input type="text" id="codigoProduto">
         <label for="inputData">DATA</label>
         <input type="date" name="Data" id="inputData">
-        <label for="varejoRadio">VAREJO</label>
+        <label for="varejoRadio" class="radio">VAREJO</label>
         <input type="radio" value="VAREJO" name="seller" id="varejoRadio">
-        <label for="atacadoRadio">ATACADO</label>
+        <label for="atacadoRadio" class="radio">ATACADO</label>
         <input type="radio" value="ATACADO" name="seller" id="atacadoRadio">
         <input id="plusBtn" class="plusBtn" type="button" value="+">
-        <input class="exportBtn" type="button" value="EXPORTAR" onclick="exportToXLSX()">
+
+        <abbr title="EXPORTAR">
+          <div class="exportBtn btn" onclick="exportToXLSX()">
+            <i class="fas fa-upload"></i>
+          </div>
+        </abbr>
+        
+        <div class="importBtn-container"  >
+          <abbr title="IMPORTAR">
+            <label for="importBtn" class="importBtnLabel "><i class="fas fa-download"></i></label>
+            <input type="file" accept=".xlsx" class="importBtn" id="importBtn" onchange="importFromXLSX(event)">
+            <div class="file-name" id="fileName"></div>
+          </abbr>
+        </div>
+          
+        <abbr title="LIMPAR TUDO">
+          <div class="removeBtn-container btn " onclick="removeAllRows()">
+            <i class="fas fa-trash"></i>
+          </div>
+        </abbr>
+
+
       </div>
       <div class="table-container">
         <table id="table" border="0" class="tableStyle">

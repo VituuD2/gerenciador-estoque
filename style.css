@@ -86,9 +86,10 @@ body{
     font-weight: 500;
 }
 
-.content .plusBtn, .exportBtn{
+.content .plusBtn, .btn {
     color: #fff;
     padding: 3px 12px 3px 12px;
+    margin: 0px 3px;
     border-radius: 5px;
 }
 
@@ -107,13 +108,60 @@ body{
 }
 
 .content .exportBtn{
-    padding: 8px 18px;
+    padding: 8px 18px 8px 12px;
     border: solid 1px darkgreen;
     background-color: green;
     transition: background-color .3s;
 }
 
-.content .exportBtn{
+input[type="file"] {
+    display: none;
+}
+
+input[type="radio"], .radio {
+    cursor: pointer;
+}
+
+.importBtnLabel{
+    background-color: #1627c2;
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .3s ease;
+    border: 1px solid #1627c2;
+
+}
+
+.importBtnLabel:hover{
+    background-color: #fff;
+    color: #1627c2;
+}
+
+.removeBtn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+    padding: 8px 18px 8px 16px;
+    border: solid 1px #bd0f0f;
+    background-color: #e91919;
+    transition: background-color .3s;
+}
+
+.removeBtn-container:hover{
+    background-color: #fff;
+    color: #e91919;
+}
+
+.btn{
+    display: inline-flex;
+    position: relative;
+    cursor: pointer;
+    width: 10px;
+    height: 20px;
     transition: background-color .3s ease, transform .1s ease;
 }
 
@@ -122,11 +170,14 @@ body{
     background-color: #fff;
 }
 
-.content .exportBtn:active{
+.content .btn:active{
     transform: scale(1.07);
 }
 
 .input-container{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
     margin: 20px 0px;
 }
 
@@ -137,9 +188,6 @@ body{
     justify-content: end;
 } */
 
-.exportBtn{
-    position: relative;
-}
 
 .cellPedido{
     color: white;
