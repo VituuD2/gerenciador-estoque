@@ -216,20 +216,21 @@ input[type="radio"], .radio {
     font-weight: 400;
 }
 
-.removeButton{
+.removeCell{
     padding: 2px 7px;
     cursor: pointer;
     border: none;
     background-color: red;
     font-weight: 600;
     color: #fff;
+    transform: scale(0.95);
     transition: transform .1s ease;
 }
 
-.removeButton:hover{
+.removeCell:hover{
     transform: scale(1.1);
 }
 
-.removeButton:active{
+.removeCell:active{
     background-color: #e5ff00;
 }

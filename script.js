@@ -22,43 +22,24 @@ function loadDataFromLocalStorage() {
 
             for (let j = 1; j < data[i].length; j++) {
                 let cell = document.createElement('td');
-                cell.textContent = data[i][j];
+                cell.textContent = data[i][j].text;
+                cell.classList.add(...data[i][j].classes);
+
                 row.appendChild(cell);
             }
 
-            // Adicionar botão de remover
-            let removeCell = document.createElement('td');
-            let removeButton = document.createElement('button');
-            removeButton.classList.add('removeButton');
-            removeButton.textContent = "✖";
-            removeButton.addEventListener('click', () => {
-                let parentRow = removeButton.closest('tr');
+            let removeCell = document.createElement('td'); // Criar a célula de remoção apenas uma vez
+            removeCell.classList.add('removeCell');
+            removeCell.textContent = "✖";
+            removeCell.addEventListener('click', () => {
+                let parentRow = removeCell.closest('tr');
                 parentRow.remove();
                 updatePedidoCount();
                 saveDataToLocalStorage();
             });
-            removeCell.appendChild(removeButton);
-            row.appendChild(removeCell);
 
-            // Verificar se o botão de remover já existe na linha
-            let existingRemoveButtonCell = row.querySelector('.removeButtonCell');
-            if (existingRemoveButtonCell) {
-                // Criar o botão de remover novamente
-                let removeCell = document.createElement('td');
-                removeCell.classList.add('removeButtonCell');
-                let removeButton = document.createElement('button');
-                removeButton.classList.add('removeButton');
-                removeButton.textContent = "✖";
-                removeButton.addEventListener('click', () => {
-                    let parentRow = removeButton.closest('tr');
-                    parentRow.remove();
-                    updatePedidoCount();
-                    saveDataToLocalStorage();
-                });
-                removeCell.appendChild(removeButton);
-                row.appendChild(removeCell);
-            }
-            
+            row.appendChild(removeCell); // Adicionar a célula de remoção à linha
+
             table.appendChild(row);
             updatePedidoCount();
         }
@@ -77,7 +58,10 @@ function saveDataToLocalStorage() {
       let rowData = [];
       let cells = tableRows[i].querySelectorAll('td');
       for (let j = 0; j < cells.length; j++) {
-        rowData.push(cells[j].textContent);
+        rowData.push({
+            text: cells[j].textContent,
+            classes: Array.from(cells[j].classList) // Salvar todas as classes da célula
+        });
       }
       data.push(rowData);
     }
@@ -90,14 +74,14 @@ codigoPedido.addEventListener('keydown', (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
         e.preventDefault();
         row = document.createElement('tr');
-        countCell = document.createElement('td');
         
         if (codigoPedido.value.length !=5) {
             window.alert('Código de Pedido Incorreto !');
         } else {
-            row.appendChild(countCell);
-            countCell.classList.add('countCell');
-            countCell.textContent = pedidoCount++;
+            let newCountCell = document.createElement('td'); // Criar uma nova célula countCell
+            row.appendChild(newCountCell);
+            newCountCell.classList.add('countCell');
+            newCountCell.textContent = pedidoCount++;
 
             let cell = document.createElement('td');
             cell.classList.add('cellPedido');
@@ -116,23 +100,23 @@ codigoPedido.addEventListener('keydown', (e) => {
                 sellerCell = document.createElement('td');
                 sellerCell.classList.add('radioCell');
                 row.appendChild(sellerCell);
-                
-                // let removeCell = document.createElement('th');
-                // let removeButton = document.createElement('button');
-                // removeButton.classList.add('removeButton');
-                // removeButton.textContent = "✖";
-                // removeButton.addEventListener('click', () => {
-                // let parentRow = removeButton.closest('tr');
-                // parentRow.remove();
-                // updatePedidoCount();
-                // saveDataToLocalStorage(); // Save data to localStorage after removing the row
-                // });
-                // removeCell.appendChild(removeButton);
-                // row.appendChild(removeCell);
-                    }
-                    codigoProduto.focus();
-                }
+
+                // Célula de exclusão
+                removeCell = document.createElement('td');
+                removeCell.classList.add('removeCell');
+                removeCell.classList.add('removeCell');
+                removeCell.textContent = "✖";
+                removeCell.addEventListener('click', () => {
+                    let parentRow = removeCell.closest('tr');
+                    parentRow.remove();
+                    updatePedidoCount();
+                    saveDataToLocalStorage(); // Save data to localStorage after removing the row
+                });
+                row.appendChild(removeCell);
             }
+            codigoProduto.focus();
+        }
+    }
 });
 
 //Função para atualizar a contagem de pedidos
@@ -183,22 +167,7 @@ codigoProduto.addEventListener('keydown', (e) => {
             window.alert('Código de Produto Incorreto !');
         } else {
             if (codigoProdutoValor) {
-                // Adicionar botão de remover
-                let removeCell = document.createElement('td');
-                removeCell.classList.add('removeButtonCell'); // Adicionar classe específica para célula do botão de remover
-                let removeButton = document.createElement('button');
-                removeButton.classList.add('removeButton');
-                removeButton.textContent = "✖";
-                removeButton.addEventListener('click', () => {
-                    let parentRow = removeButton.closest('tr');
-                    parentRow.remove();
-                    updatePedidoCount();
-                    saveDataToLocalStorage();
-                });
-                removeCell.appendChild(removeButton);
-                row.appendChild(removeCell);
-    
-
+                
                 cell2.textContent = produtos[codigoProdutoValor];
                 row.appendChild(cell2);
                 saveDataToLocalStorage(); 
@@ -312,15 +281,15 @@ function exportToXLSX() {
         let rowData = [];
         let cells = tableRows[i].querySelectorAll('td');
         
-        // Create a new array to store cell values excluding removeButton cells
+        // Create a new array to store cell values excluding removeCell cells
         let rowDataWithoutButtons = [];
         for (let j = 0; j < cells.length; j++) {
-            if (!cells[j].classList.contains('removeButton')) {
+            if (!cells[j].classList.contains('removeCell')) {
                 rowDataWithoutButtons.push(cells[j].textContent);
             }
         }
 
-        // Skip rows that only contain the removeButton cell
+        // Skip rows that only contain the removeCell cell
         if (rowDataWithoutButtons.length > 0) {
             rowData.push(...rowDataWithoutButtons);
             data.push(rowData);
@@ -367,20 +336,16 @@ function importAndReplaceTable(event) {
                 row.appendChild(cell);
             }
 
-            let removeCell = document.createElement("td");
-            let removeButton = document.createElement("button");
-            removeButton.classList.add("removeButton");
-            removeButton.textContent = "✖";
-            removeButton.addEventListener("click", () => {
-                let parentRow = removeButton.closest("tr");
-                if(parentRow) {
-                    parentRow.remove();
-                    updatePedidoCount();
-                    saveDataToLocalStorage();
-                }
+            let removeCell = document.createElement('td'); // Criar a célula de remoção
+            removeCell.classList.add('removeCell');
+            removeCell.textContent = "✖";
+            removeCell.addEventListener('click', () => {
+                let parentRow = removeCell.closest('tr');
+                parentRow.remove();
+                updatePedidoCount();
+                saveDataToLocalStorage();
             });
-            removeCell.appendChild(removeButton);
-            row.appendChild(removeCell);
+            row.appendChild(removeCell); // Adicionar a célula de remoção à nova linha
 
             table.appendChild(row);
             saveDataToLocalStorage();
