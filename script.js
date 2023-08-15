@@ -137,7 +137,7 @@ function updatePedidoCount() {
 //Função para carregar os dados do arquivo produtos.json
 async function carregarProdutos() {
     try {
-        const response = await fetch('produtos.json');
+        const response = await fetch('assets/produtos.json');
         const data = await response.json();
         return data;
     } catch (error) {
